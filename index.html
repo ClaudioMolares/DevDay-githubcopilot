@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Uma demonstração interativa de separação de resíduos recicláveis."
+    />
+    <title>Ciclo | Classificador de recicláveis</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="wordmark" href="./" aria-label="Ciclo, início">
+        <span class="wordmark-icon" aria-hidden="true">↻</span>
+        <span>CICLO<span class="wordmark-period">.</span></span>
+      </a>
+      <span class="demo-label"><span aria-hidden="true"></span> MODO DEMONSTRAÇÃO</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">UM GESTO DE CADA VEZ <span> / </span> RECICLAGEM</p>
+        <h1 id="page-title">Cada coisa<br />no seu <em>ciclo.</em></h1>
+        <p class="intro-copy">
+          Escolhe um objeto e descobre onde o colocar. Pequenas decisões fazem
+          diferença.
+        </p>
+      </section>
+
+      <section class="sensor-dashboard" aria-labelledby="sensor-heading">
+        <div class="sensor-dashboard-heading">
+          <div>
+            <p class="step-label">ESP32 <span>·</span> TELEMETRIA AO VIVO</p>
+            <h2 id="sensor-heading">Sensores da tua estação.</h2>
+          </div>
+          <span class="connection-status" id="connection-status" role="status">Desligado</span>
+        </div>
+
+        <form class="sensor-connect-form" id="sensor-connect-form">
+          <label for="esp32-url">Endereço do ESP32</label>
+          <div class="sensor-connect-controls">
+            <input
+              id="esp32-url"
+              name="esp32-url"
+              type="url"
+              inputmode="url"
+              placeholder="http://192.168.1.50"
+              autocomplete="url"
+              required
+            />
+            <button class="connect-button" id="connect-button" type="submit">Ligar</button>
+          </div>
+        </form>
+
+        <div class="sensor-readings" aria-label="Leituras dos sensores">
+          <article class="sensor-reading sensor-temperature">
+            <span class="sensor-icon" aria-hidden="true">°</span>
+            <p class="sensor-label">TEMPERATURA</p>
+            <p class="sensor-value"><span id="temperature-value">--</span><span class="sensor-unit">°C</span></p>
+          </article>
+          <article class="sensor-reading sensor-humidity">
+            <span class="sensor-icon" aria-hidden="true">%</span>
+            <p class="sensor-label">HUMIDADE</p>
+            <p class="sensor-value"><span id="humidity-value">--</span><span class="sensor-unit">%</span></p>
+          </article>
+          <article class="sensor-reading sensor-light">
+            <span class="sensor-icon" aria-hidden="true">☼</span>
+            <p class="sensor-label">LUZ AMBIENTE</p>
+            <p class="sensor-value"><span id="light-value">--</span><span class="sensor-unit">ADC</span></p>
+          </article>
+        </div>
+        <p class="sensor-message" id="sensor-message" aria-live="polite">
+          Introduz o endereço mostrado na consola série do ESP32.
+        </p>
+      </section>
+
+      <section class="classifier" aria-label="Demonstração de classificação">
+        <div class="samples-panel">
+          <div class="section-heading">
+            <div>
+              <p class="step-label">PASSO 01 <span>·</span> ESCOLHE</p>
+              <h2>O que tens aí?</h2>
+            </div>
+            <span class="sample-count">05 AMOSTRAS</span>
+          </div>
+
+          <div class="sample-grid" role="group" aria-label="Objetos de exemplo">
+            <button class="sample" type="button" data-sample="newspaper" aria-pressed="false">
+              <span class="sample-art art-paper" aria-hidden="true">🗞️</span>
+              <span class="sample-name">Jornal</span>
+              <span class="sample-kind">PAPEL</span>
+            </button>
+            <button class="sample" type="button" data-sample="bottle" aria-pressed="false">
+              <span class="sample-art art-plastic" aria-hidden="true">🧴</span>
+              <span class="sample-name">Garrafa PET</span>
+              <span class="sample-kind">PLÁSTICO</span>
+            </button>
+            <button class="sample" type="button" data-sample="jar" aria-pressed="false">
+              <span class="sample-art art-glass" aria-hidden="true">🫙</span>
+              <span class="sample-name">Frasco</span>
+              <span class="sample-kind">VIDRO</span>
+            </button>
+            <button class="sample" type="button" data-sample="can" aria-pressed="false">
+              <span class="sample-art art-metal" aria-hidden="true">🥫</span>
+              <span class="sample-name">Lata</span>
+              <span class="sample-kind">METAL</span>
+            </button>
+            <button class="sample" type="button" data-sample="box" aria-pressed="false">
+              <span class="sample-art art-other" aria-hidden="true">📦</span>
+              <span class="sample-name">Caixa suja</span>
+              <span class="sample-kind">OUTROS</span>
+            </button>
+          </div>
+          <p class="sample-hint">Seleciona uma amostra para continuar.</p>
+        </div>
+
+        <aside class="result-panel" aria-labelledby="result-heading">
+          <div class="result-topline">
+            <p class="step-label">PASSO 02 <span>·</span> DESCOBRE</p>
+            <span class="result-mark" aria-hidden="true">✳</span>
+          </div>
+          <h2 id="result-heading">O destino certo.</h2>
+          <p class="result-intro">A resposta aparece aqui quando escolheres um objeto.</p>
+
+          <div class="result-output" id="result-output" aria-live="polite" aria-atomic="true">
+            <div class="empty-state" id="empty-state">
+              <span class="empty-icon" aria-hidden="true">＋</span>
+              <p>À espera da tua escolha</p>
+            </div>
+          </div>
+
+          <button class="classify-button" id="classify-button" type="button" disabled>
+            <span>Ver resultado</span>
+            <span class="button-arrow" aria-hidden="true">↗</span>
+          </button>
+          <p class="demo-note"><span aria-hidden="true">i</span> Resultados preparados para esta demonstração. Sem análise por IA.</p>
+        </aside>
+      </section>
+
+      <footer class="page-footer">
+        <span>SEPARAR É O PRIMEIRO PASSO.</span>
+        <span>Confirma sempre as regras de reciclagem da tua zona.</span>
+      </footer>
+    </main>
+  </body>
+</html>
